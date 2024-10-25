@@ -1,1 +1,105 @@
-print("poka")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:FindFirstChildOfClass("Humanoid")
+local UserInputService = game:GetService("UserInputService")
+local screenGui = Instance.new("ScreenGui")
+local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+if playerGui then
+	screenGui.Parent = playerGui
+else
+	warn('PlayerGui не найден')
+end
+
+local uiCornerMainFrame = Instance.new("UICorner")
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0.3, 122, 0.6, 73)
+MainFrame.Position = UDim2.new(0.3, 16, 0.1, 25)
+MainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+MainFrame.BackgroundTransparency = 0.002
+MainFrame.Parent = screenGui
+MainFrame.Active = true
+MainFrame.Selectable = true
+MainFrame.Visible = true
+MainFrame.Draggable = true
+uiCornerMainFrame.CornerRadius = UDim.new(0,10)
+uiCornerMainFrame.Parent = MainFrame
+
+
+local uiCornerScrollingFrame = Instance.new("UICorner")
+local MainScrolingFrame = Instance.new("ScrollingFrame")
+MainScrolingFrame.Size = UDim2.new(0.9, 25, 0.7, 38)
+MainScrolingFrame.Position = UDim2.new(0, 12, 0, 89)
+MainScrolingFrame.BackgroundColor3 = Color3.new(0.14902, 0.14902, 0.14902)
+MainScrolingFrame.Parent = MainFrame
+uiCornerScrollingFrame.CornerRadius = UDim.new(0,5)
+uiCornerScrollingFrame.Parent = MainScrolingFrame
+MainScrolingFrame.ScrollBarThickness = 0
+
+local ScrollButton_names = {"CPU limiter", "Auto Hide", "Anti AFK", "Close when kicked from server"}
+local button_pos = {
+	UDim2.new(0, 8, 0, 30),
+	UDim2.new(0, 8, 0, 78),
+	UDim2.new(0, 8, 0, 126),
+	UDim2.new(0, 8, 0, 174),
+}
+
+for i, ScrollButton_name in ipairs(ScrollButton_names) do
+	local buttonPadding = Instance.new("UIPadding")
+	local buttonUIcorner = Instance.new("UICorner")
+	local buttonUIstroke = Instance.new("UIStroke")
+	local button = Instance.new("TextButton")
+	button.Size = UDim2.new(0.9, 33, 0, 42)
+	button.Position = button_pos[i]
+	button.TextColor3 = Color3.new(1, 1, 1)
+	button.TextSize = 10
+	button.Text = ScrollButton_name
+	button.TextXAlignment = Enum.TextXAlignment.Left
+	button.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
+	button.Parent = MainScrolingFrame
+	buttonUIcorner.CornerRadius = UDim.new(0, 5)
+	buttonUIcorner.Parent = button
+
+	buttonUIstroke.Thickness = 1.1
+	buttonUIstroke.Color = Color3.fromRGB(68, 68, 68)  
+	buttonUIstroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border 
+	buttonUIstroke.Parent = button 	
+	buttonPadding.PaddingLeft = UDim.new(0, 18)
+	buttonPadding.Parent = button
+
+	
+	local ToggleFrame = Instance.new('Frame')
+	ToggleFrame.Size = UDim2.new(0, 47, 0, 22)
+	ToggleFrame.Position = UDim2.new(1, -60, 0.5, -12.5)
+	ToggleFrame.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+	ToggleFrame.Parent = button
+	ToggleFrame.BorderSizePixel = 0	
+
+	local UIcornerToggleFrame = Instance.new("UICorner")
+	UIcornerToggleFrame.CornerRadius = UDim.new(0.5, 0)
+	UIcornerToggleFrame.Parent = ToggleFrame
+
+
+	local toggleCircle = Instance.new("Frame")
+	toggleCircle.Position = UDim2.new(0, 2.5, 0, 2.5)
+	toggleCircle.Size = UDim2.new(0, 18, 0, 18)
+	toggleCircle.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+	toggleCircle.BorderSizePixel = 0
+	toggleCircle.Parent = ToggleFrame
+
+	local UIcornerToggleCircle = Instance.new("UICorner")
+	UIcornerToggleCircle.CornerRadius = UDim.new(1, 0)
+	UIcornerToggleCircle.Parent = toggleCircle
+
+	local isActive = false
+
+	button.MouseButton1Click:Connect(function()
+		isActive = not isActive
+		if isActive then
+			toggleCircle.BackgroundColor3 = Color3.new(0.121569, 0.576471, 0.882353)
+			toggleCircle:TweenPosition(UDim2.new(1, -22.5, 0, 2.5), "Out", "Sine", 0.25, true) 
+		else
+			toggleCircle.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+			toggleCircle:TweenPosition(UDim2.new(0, 2.5, 0, 2.5), "Out", "Sine", 0.25, true) 
+		end
+	end)
+end
